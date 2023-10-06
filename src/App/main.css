@@ -1,0 +1,119 @@
+:root {
+    --color-light1: #ddd;
+    --color-light2: #999;
+    --grid-size: 60px;
+    --grid-margin: 0px;/*5px;*/
+}
+
+*, *::after, *::before {
+    box-sizing: border-box;
+    margin: 0;
+
+    font-family: "Source Han Serif K VF", "思源宋体 VF", "思源黑体 VF", serif;
+    font-weight: bold;
+    color: var(--color-light1);
+}
+
+html, body, body > *, .App {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+body {
+    background: #1b2128;
+}
+
+button {
+    vertical-align: middle;
+}
+
+#game-board {
+    align-self: center;
+
+    border: 3px solid var(--color-light2);
+    border-radius: 14px;
+    overflow: hidden;
+
+    padding: 3px;
+}
+#game-board-inner {
+    align-self: center;
+
+    border: 1px solid var(--color-light2);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.column-no div {
+    display: inline-block;
+
+    width: var(--grid-size);
+
+    height: calc(var(--grid-size) * 0.6);
+    margin: var(--grid-margin);
+}
+.row-no div {
+    display: block;
+
+    line-height: var(--grid-size);
+    height: var(--grid-size);
+
+    width: calc(var(--grid-size) * 0.6);
+    margin: calc(2*var(--grid-margin));
+}
+.column-no {
+    position: absolute;
+    transform: translate(0, calc(var(--grid-size) * -0.6));
+}
+.row-no {
+    position: absolute;
+    transform: translate(calc(var(--grid-size) * -0.6), calc(var(--grid-margin) * -1));
+}
+
+
+.grid {
+    width: var(--grid-size);
+    height: var(--grid-size);
+    text-align: center;
+
+    font-size: 20px;
+    font-weight: lighter;
+
+    color: var(--color-light1);
+    border: 1px solid var(--color-light2);
+    border-radius: 0;
+    background: #0000;
+
+    margin: var(--grid-margin);
+
+    transition: 0.07s;
+}
+.board-row:nth-child(1) .grid {
+    border-top: 0;
+}
+.board-row:nth-last-child(1) .grid {
+    border-bottom: 0;
+}
+.board-row .grid:nth-last-child(1) {
+    border-right: 0;
+}
+.board-row .grid:nth-child(1) {
+    border-left: 0;
+}
+.board-row:nth-child(2n) .grid:nth-child(2n+1),
+.board-row:nth-child(2n+1) .grid:nth-child(2n) {
+    background-color: #6664;
+}
+
+
+
+.grid:hover {
+    background-color: #0003;
+}
+
+.grid:active {
+    background-color: #0008;
+}
