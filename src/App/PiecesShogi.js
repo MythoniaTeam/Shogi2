@@ -1,4 +1,6 @@
 
+import {Piece} from "./Piece";
+
 const goldGeneralWalkableGrid = [
     [1, -1],
     [1, 0],
@@ -8,30 +10,26 @@ const goldGeneralWalkableGrid = [
     [-1, 0]
 ]
 
-class Piece {
+class PieceShogi extends Piece{
 
-    walkableGrid = [[1, 0]];
-    upgraded = false;
+    promoted = false;
+    pieceNamePromoted = "";
 
-    pieceName = "";
-    pieceNameUpgraded = "";
-
-    constructor(pieceName, pieceNameUpgraded = null) {
-        this.pieceName = pieceName;
-        this.pieceNameUpgraded = pieceNameUpgraded;
-        if (pieceNameUpgraded === null) {
-            this.upgrade = () => false;
+    constructor(pieceName, pieceNamePromoted = null) {
+        super(pieceName);
+        this.pieceNamePromoted = pieceNamePromoted;
+        if (pieceNamePromoted === null) {
+            this.promote = () => false;
         }
     }
 
-
-    tryUpgrade() {
-        if (this.upgraded) return;
-        if (this.upgrade()) {
-            this.upgraded = true;
+    tryPromote() {
+        if (this.promoted) return;
+        if (this.promote()) {
+            this.promoted = true;
         }
     }
-    upgrade() {
+    promote() {
         this.walkableGrid = goldGeneralWalkableGrid;
         return true;
     }
@@ -45,17 +43,12 @@ class Piece {
     }
 }
 
-export class Pawn extends Piece {
-    constructor() {
-        super("步兵", "と");
-    }
-}
 
 
-export class King extends Piece {
+
+export class King extends PieceShogi {
     constructor() {
         super("王將");
-        this.upgrade = () => false;
     }
 
     isWalkable(relY, relX) {
@@ -63,13 +56,36 @@ export class King extends Piece {
     }
 }
 
-export class GoldGeneral extends Piece {
+export class Pawn extends PieceShogi {
     constructor() {
-        super("金將");
-        this.walkableGrid = goldGeneralWalkableGrid;
+        super("步兵", "と");
     }
 }
-export class SilverGeneral extends Piece {
+
+export class Lance extends PieceShogi {
+    constructor() {
+        super("香車", "杏");
+    }
+
+    isWalkable(relY, relX) {
+        return true;
+    }
+}
+
+export class Knight extends PieceShogi {
+    constructor() {
+        super("桂馬", "圭");
+    }
+    walkableGrid = [
+        [2, -1],
+        [2, 1]
+    ]
+}
+
+export class SilverGeneral extends PieceShogi {
+    constructor() {
+        super("銀將", "全");
+    }
     walkableGrid = [
         [1, -1],
         [1, 0],
@@ -79,9 +95,23 @@ export class SilverGeneral extends Piece {
     ]
 }
 
-export class Knight extends Piece {
-    walkableGrid = [
-        [2, -1],
-        [2, 1]
-    ]
+export class GoldGeneral extends PieceShogi {
+    constructor() {
+        super("金將");
+        this.walkableGrid = goldGeneralWalkableGrid;
+    }
 }
+
+export class Bishop extends PieceShogi {
+    constructor() {
+        super("角行", "龍馬");
+    }
+}
+
+export class Rook extends PieceShogi {
+    constructor() {
+        super("飛車", "龍王");
+    }
+}
+
+
