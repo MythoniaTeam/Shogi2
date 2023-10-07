@@ -2,10 +2,24 @@ import {useState} from "react";
 import {ForElements} from "./Functions";
 import {GridNumbers} from "./GridNumbers";
 
+
 export function GameBoard({width, height, winLength, rowNoType, columnNoType}){
 
+    const [xIsNext, setXIsNext] = useState(true);
+    const [grids, setGrids] =  useState(
+        Array(height).fill(
+            Array(width).fill(null)));
+
+    const [gridSelected, setGridSelected] = useState(null);
+
     function handleClick(row, column) {
-        if(grids[row][column]) return; //grid has been occupied
+
+        if(!gridSelected) {
+            setGridSelected({x: row, y: column, obj: grids[row][column]});
+        }
+        else {
+            checkGridWalkable(row, column);
+        }
 
         const newGrid = grids.slice();
         newGrid[row] = grids[row].slice();
@@ -20,6 +34,10 @@ export function GameBoard({width, height, winLength, rowNoType, columnNoType}){
         }
 
         setGrids(newGrid);
+    }
+    
+    function checkGridWalkable(row, column) {
+        //if (gridSelected.obj.)
     }
 
     function checkWinner(grid, row, column, length, char){
@@ -53,11 +71,6 @@ export function GameBoard({width, height, winLength, rowNoType, columnNoType}){
 
         return false;
     }
-
-    const [xIsNext, setXIsNext] = useState(true);
-    const [grids, setGrids] =  useState(
-        Array(height).fill(
-            Array(width).fill(null)));
 
     return(
         <div id="game-board">

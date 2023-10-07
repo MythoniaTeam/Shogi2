@@ -1,3 +1,4 @@
+
 :root {
     --color-light1: #ddd;
     --color-light2: #999;
@@ -9,9 +10,11 @@
     box-sizing: border-box;
     margin: 0;
 
-    font-family: "Source Han Serif K VF", "思源宋体 VF", "思源黑体 VF", serif;
+    font-family: "SH Serif - Regular", "Source Han Serif K VF", "思源宋体 VF", "思源黑体 VF", serif;
     font-weight: bold;
     color: var(--color-light1);
+
+    transition: 0.07s;
 }
 
 html, body, body > *, .App {
