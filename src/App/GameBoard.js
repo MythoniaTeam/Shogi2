@@ -3,44 +3,73 @@ import {ForElements} from "./Functions";
 import {GridNumbers} from "./GridNumbers";
 
 
-export function GameBoard({width, height, winLength, rowNoType, columnNoType}){
 
-    const [xIsNext, setXIsNext] = useState(true);
-    const [grids, setGrids] =  useState(
-        Array(height).fill(
-            Array(width).fill(null)));
+class Board {
+    width = 5;
+    height = 5;
+    winLength = 3;
 
-    const [gridSelected, setGridSelected] = useState(null);
+    grids;
 
-    function handleClick(row, column) {
+    xIsNext = true;
+    gridSelected = null;
 
-        if(!gridSelected) {
-            setGridSelected({x: row, y: column, obj: grids[row][column]});
+    clone() {
+        let clone =
+            new Board(
+                this.width,
+                this.height,
+                this.winLength
+            );
+        clone.grids = this.grids;
+        clone.xIsNext = this.xIsNext;
+        clone.gridSelected = this.gridSelected;
+        return clone;
+    }
+
+    constructor(height, width, winLength = 3) {
+        this.height = height;
+        this.width = width;
+        this.grids =
+            Array(height).fill(
+                Array(width).fill(null));
+        this.winLength = winLength;
+        this.xIsNext = true;
+    }
+
+    setGrid(row, column, value) {
+        let newGrids = this.grids.slice();
+        let newRow = newGrids[row].slice();
+        newRow[column] = value;
+        newGrids[row] = newRow;
+        this.grids = newGrids;
+    }
+
+    handleClick(row, column) {
+
+        console.log("handleClick: Click (" + row + ", " + column + ")");
+
+        if(!this.gridSelected) {
+            this.gridSelected = {x: row, y: column, obj: this.grids[row][column]};
         }
         else {
-            checkGridWalkable(row, column);
+            this.checkGridWalkable(row, column);
         }
 
-        const newGrid = grids.slice();
-        newGrid[row] = grids[row].slice();
+        let char = this.xIsNext ? '龍馬' : 'と'
+        this.setGrid(row, column, char);
+        this.xIsNext = !this.xIsNext;
 
-
-        let char = xIsNext ? '龍馬' : 'と'
-        newGrid[row][column] = char;
-        setXIsNext(!xIsNext);
-
-        if(checkWinner(newGrid, row, column, winLength, char)){
+        if(this.checkWinner(this.grids, row, column, this.winLength, char)){
             alert(char + " wins");
         }
-
-        setGrids(newGrid);
     }
-    
-    function checkGridWalkable(row, column) {
+
+
+    checkGridWalkable(row, column) {
         //if (gridSelected.obj.)
     }
-
-    function checkWinner(grid, row, column, length, char){
+    checkWinner(grid, row, column, length, char){
         const dir = [
             { dRow: 1, dColumn :-1 },
             { dRow: 1, dColumn : 0 },
@@ -68,8 +97,17 @@ export function GameBoard({width, height, winLength, rowNoType, columnNoType}){
             }
 
         }
-
         return false;
+    }
+}
+
+export function GameBoard({width, height, winLength, rowNoType, columnNoType}){
+    const [board, setBoard] = useState(new Board(width, height, winLength));
+
+    function handleClick(row, column) {
+        let newBoard = board.clone();
+        newBoard.handleClick(row, column);
+        setBoard(newBoard);
     }
 
     return(
@@ -78,8 +116,8 @@ export function GameBoard({width, height, winLength, rowNoType, columnNoType}){
             <div id="game-board-inner">
             {ForElements(height, (row) =>
                 <GridRow
-                    value={grids[row]}
-                    onGridInRowClick={(column) => handleClick(row, column)} //row, 已经确认y
+                    value={board.grids[row]}
+                    handleColumnClick={(c) => handleClick(row, c)} //row, 已经确认y
 
                     rowIndex={row}
                     width={width}
@@ -91,12 +129,12 @@ export function GameBoard({width, height, winLength, rowNoType, columnNoType}){
 
 
 
-function GridRow({rowIndex, width, value, onGridInRowClick}){
+function GridRow({rowIndex, width, value, handleColumnClick}){
     return (
         <div className="board-row">
             {ForElements(width,(column) =>
                 <Grid value={value[column]}
-                      onGridClick={() => onGridInRowClick(column)}
+                      handleGridClick={() => handleColumnClick(column)}
 
                       rowIndex={rowIndex}
                       columnIndex={column}
@@ -105,7 +143,7 @@ function GridRow({rowIndex, width, value, onGridInRowClick}){
     )
 }
 
-function Grid({rowIndex, columnIndex, value, onGridClick}){
+function Grid({rowIndex, columnIndex, value, handleGridClick}){
     //const r = rowIndex, c = columnIndex;
 
     //function handleClick() {
@@ -115,7 +153,8 @@ function Grid({rowIndex, columnIndex, value, onGridClick}){
     return (
         <button
             className="grid"
-            onClick={onGridClick}
+            onClick={() => handleGridClick() }
+
         >{value}</button>
     )
 }
