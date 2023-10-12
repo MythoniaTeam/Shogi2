@@ -174,7 +174,7 @@ button {
     /*background-image: url("../Imgs/ShogiPiece.svg");*/
 }
 
-.grid svg {
+.piece svg {
     position: absolute;
     width: var(--grid-svg-size);
     height: var(--grid-svg-size);
@@ -183,20 +183,20 @@ button {
 }
 
 /*敌方棋子*/
-.grid.inverse > div > * {
+.piece.inverse > * {
     transform: rotate(180deg);
     transition: 0s;
 }
-.grid > div > p {
+.piece > p {
     color: var(--color-player1);
 }
-.grid > div > svg > path {
+.piece > svg > path {
     stroke: var(--color-player1);
 }
-.grid.inverse > div > p {
+.piece.inverse > p {
     color: var(--color-player2);
 }
-.grid.inverse > div > svg > path {
+.piece.inverse > svg > path {
     stroke: var(--color-player2);
 }
 

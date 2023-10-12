@@ -1,6 +1,8 @@
+import {Player} from "./Game";
+
 export class Piece {
 
-    player = 1;
+    player = null;
 
     walkableGrid = [[1, 0]];
 
@@ -17,4 +19,6 @@ export class Piece {
         }
         return false;
     }
+
+    isBelongTo = (player) => this.player === player;
 }

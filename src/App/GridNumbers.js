@@ -1,4 +1,5 @@
-import {ForElements} from "./Functions";
+import {map} from "./GameBoard";
+
 
 export function getLatinLetter(no){
     let str = (no).toString(26),
@@ -24,7 +25,7 @@ export function getChineseLetter(no){
             + str;
         str = ((str[0] === '十' && temp === '一') ? '' : temp) + str;
 
-        no = parseInt(no / 10);
+        no = Math.floor(no / 10);
 
         i++
     }
@@ -33,7 +34,7 @@ export function getChineseLetter(no){
 
 export function GridNumbers({width, height, rowNoType, columnNoType}){
     function getNoDivs(length, type) {
-        return ForElements(length, (i) =>
+        return map(length, (i) =>
             <div key={i}>
                 {
                     (type === "latin")?
